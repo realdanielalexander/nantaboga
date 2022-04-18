@@ -1,10 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:html' as html;
 
 class Customization extends StatefulWidget {
   const Customization({Key? key}) : super(key: key);
@@ -15,6 +21,7 @@ class Customization extends StatefulWidget {
 
 class _CustomizationState extends State<Customization> with SingleTickerProviderStateMixin {
   late TabController _controller;
+  final key = GlobalKey();
 
   ScreenshotController screenshotController = ScreenshotController();
   var _race = 'swamp';
@@ -103,8 +110,8 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
             border: _selectedTail == tail ? Border.all(width: 1.0, color: Color(0xFF526C2F)) : null,
             borderRadius: BorderRadius.circular(20.0),
             image: DecorationImage(
-                image: AssetImage("assets/images/TEXT_" + _texture + "/TAIL-" + _texture + "-" + tail + ".png"),
-                fit: BoxFit.contain
+                image: AssetImage("assets/images/TEXT_" + _texture + "/ICON-TAIL-" + _texture + "-" + tail + ".png"),
+                fit: BoxFit.cover
             ),
           ),
         ),
@@ -124,7 +131,7 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
             border: _selectedTail == tail ? Border.all(width: 1.0, color: Color(0xFF526C2F)) : null,
             borderRadius: BorderRadius.circular(20.0),
             image: DecorationImage(
-                image: AssetImage("assets/images/TEXT_" + _texture + "/TAIL-" + _texture + "-" + tail + ".png"),
+                image: AssetImage("assets/images/TEXT_" + _texture + "/ICON-TAIL-" + _texture + "-" + tail + ".png"),
                 fit: BoxFit.contain
             ),
           ),
@@ -145,8 +152,8 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
             border: _selectedBell == bell ? Border.all(width: 1.0, color: Color(0xFF526C2F)) : null,
             borderRadius: BorderRadius.circular(20.0),
             image: DecorationImage(
-                image: AssetImage(bell == '' ? "assets/images/nonebutton.png" : "assets/images/ACCESSORIES/" + bell + ".png"),
-                fit: BoxFit.contain
+                image: AssetImage(bell == '' ? "assets/images/nonebutton.png" : "assets/images/ACCESSORIES/ICON-ACC-" + bell + ".png"),
+                fit: BoxFit.cover
             ),
           ),
         ),
@@ -166,8 +173,8 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
             border: _selectedMisc == misc ? Border.all(width: 1.0, color: Color(0xFF526C2F)) : null,
             borderRadius: BorderRadius.circular(20.0),
             image: DecorationImage(
-                image: AssetImage(misc == '' ? "assets/images/nonebutton.png" : "assets/images/MISC/MISC_" + misc + ".png"),
-                fit: BoxFit.contain
+                image: AssetImage(misc == '' ? "assets/images/nonebutton.png" : "assets/images/MISC/ICON-MISC-" + misc + ".png"),
+                fit: BoxFit.cover
             ),
           ),
         ),
@@ -268,20 +275,38 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                         ),
                         GestureDetector(
                           onTap: () async {
-                            if (await Permission.storage.request().isGranted) {
-                              final directory = await getDownloadPath();
-                              String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.jpg';
-                              String path = '$directory';
+                            if(kIsWeb){
+                              RenderRepaintBoundary boundary = key.currentContext!
+                                  .findRenderObject() as RenderRepaintBoundary;
+                              var image = await boundary.toImage();
 
-                              screenshotController.captureAndSave(
-                                  path,
-                                  fileName:fileName,
-                                  delay: const Duration(milliseconds: 10)
-                              );
+                              ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+                              Uint8List pngBytes = byteData!.buffer.asUint8List();
+                              final _base64 = base64Encode(pngBytes);
+                              final anchor =
+                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
+                                ..download = "image.png"
+                                ..target = 'blank';
+
+                              html.document.body!.append(anchor);
+                              anchor.click();
+                              anchor.remove();
+
                             }
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text('Naga berhasil disimpan.'),
-                            ));
+                            // if (await Permission.storage.request().isGranted) {
+                            //   final directory = await getDownloadPath();
+                            //   String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.jpg';
+                            //   String path = '$directory';
+                            //
+                            //   screenshotController.captureAndSave(
+                            //       path,
+                            //       fileName:fileName,
+                            //       delay: const Duration(milliseconds: 10)
+                            //   );
+                            // }
+                            // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            //   content: Text('Naga berhasil disimpan.'),
+                            // ));
                           },
                           child: Container(
                             child: Image.asset('assets/images/downloadbutton.png', width: 40),
@@ -291,7 +316,8 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                     ),
                     GestureDetector(
                       onTap: () {
-                        exit(0);
+                        // exit(0);
+                        SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
                       },
                       child: Container(
                         child: Image.asset('assets/images/exitbutton.png', width: 40),
@@ -302,14 +328,15 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                 SizedBox(height: 16.0),
                 Screenshot(
                   controller: screenshotController,
+                  key: key,
                   child: Stack(
                     children: [
                       // if (_selectedHead != '') Image.asset('assets/images/' + 'TEXT_' + texture + '/HEAD-' + texture + '-' + _selectedHead + '.png'),
                       // Image.asset('assets/images/naga.png'),
                       // Image.asset('assets/images/naga.png'),
                       Image.asset('assets/images/PREVIEW/TEST-DARK.png'),
-                      if(_selectedFin != '') Image.asset('assets/images/PREVIEW/EXTRUDED_BONES/$_selectedFin.png'),
                       Image.asset('assets/images/PREVIEW/TEXT_$_texture/GEST-$_texture.png'),
+                      if(_selectedFin != '') Image.asset('assets/images/PREVIEW/EXTRUDED_BONES/$_selectedFin.png'),
                       if(_selectedMisc != '') Image.asset('assets/images/PREVIEW/MISC/MISC-$_selectedMisc.png'),
                       if(_selectedBell != '') Image.asset('assets/images/PREVIEW/ACCESSORIES/ACC-$_selectedBell.png'),
                       Image.asset('assets/images/PREVIEW/TEXT_$_texture/TAIL-$_texture-$_selectedTail.png'),

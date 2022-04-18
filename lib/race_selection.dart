@@ -26,7 +26,7 @@ class _RaceSelectionState extends State<RaceSelection> {
         backgroundColor: const Color(0xFFFAF4ED),
         body: Center(
           child: Container(
-            width: 500,
+            width: 400,
             height: height,
             margin: EdgeInsets.only(top: 128.0),
             padding: EdgeInsets.symmetric(horizontal: 32.0),
