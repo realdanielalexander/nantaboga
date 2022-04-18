@@ -285,13 +285,13 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               final _base64 = base64Encode(pngBytes);
                               print(_base64);
                               final anchor =
-                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
-                                ..download = "image.png"
-                                ..target = 'blank';
+                              html.AnchorElement(href: 'data:application/octet-stream;charset=utf-16le;base64,$_base64')
+                                ..setAttribute("download", "image.jpg")
+                                ..click();
 
-                              html.document.body!.append(anchor);
-                              anchor.click();
-                              anchor.remove();
+                              // html.document.body!.append(anchor);
+                              // anchor.click();
+                              // anchor.remove();
 
                             }
                             // if (await Permission.storage.request().isGranted) {
