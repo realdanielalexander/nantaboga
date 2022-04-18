@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'dart:js' as js;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -283,16 +284,18 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
                               Uint8List pngBytes = byteData!.buffer.asUint8List();
                               final _base64 = base64Encode(pngBytes);
-                              debugPrint(_base64);
 
-                              final anchor =
-                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
-                                ..download = "image.png"
-                                ..target = 'blank';
+                              js.context.callMethod("webSaveAs", [html.Blob([pngBytes]), "image.png"]);
+                              // debugPrint(_base64);
 
-                              html.document.body!.append(anchor);
-                              anchor.click();
-                              anchor.remove();
+                              // final anchor =
+                              // html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
+                              //   ..download = "image.png"
+                              //   ..target = 'blank';
+                              //
+                              // html.document.body!.append(anchor);
+                              // anchor.click();
+                              // anchor.remove();
 
                               // html.document.body!.append(anchor);
                               // anchor.click();
