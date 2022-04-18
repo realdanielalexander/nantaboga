@@ -285,8 +285,7 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               final _base64 = base64Encode(pngBytes);
                               final anchor =
                               html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
-                                ..download = "image.png"
-                                ..target = 'blank';
+                                ..download = "image.png";
 
                               html.document.body!.append(anchor);
                               anchor.click();
@@ -317,7 +316,7 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                     GestureDetector(
                       onTap: () {
                         // exit(0);
-                        SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       child: Container(
                         child: Image.asset('assets/images/exitbutton.png', width: 40),
