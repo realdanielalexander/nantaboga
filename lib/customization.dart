@@ -283,12 +283,16 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
                               Uint8List pngBytes = byteData!.buffer.asUint8List();
                               final _base64 = base64Encode(pngBytes);
-                              String data = _base64.toString();
-                              print(_base64);
+                              debugPrint(_base64);
+
                               final anchor =
-                              html.AnchorElement(href: 'data:application/octet-stream;charset=utf-16le;base64,$data')
-                                ..setAttribute("download", "image.png")
-                                ..click();
+                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
+                                ..download = "image.png"
+                                ..target = 'blank';
+
+                              html.document.body!.append(anchor);
+                              anchor.click();
+                              anchor.remove();
 
                               // html.document.body!.append(anchor);
                               // anchor.click();
