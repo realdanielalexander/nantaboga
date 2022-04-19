@@ -79,20 +79,15 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     Positioned(
                       bottom: 0,
-                      child: GestureDetector(
-                        onTap: () async {
-                          Navigator.pushNamed(context, '/race-selection');
-                        },
-                        child: Container(
-                          height: 140,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            image: const DecorationImage(
-                                image: AssetImage("assets/images/copyright.png"),
-                                fit: BoxFit.contain
-                            ),),
-                        ),
+                      child: Container(
+                        height: 140,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          image: const DecorationImage(
+                              image: AssetImage("assets/images/copyright.png"),
+                              fit: BoxFit.contain
+                          ),),
                       ),
                     ),
                   ]

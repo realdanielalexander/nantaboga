@@ -34,6 +34,7 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
   var _selectedTail = 'A';
   var _selectedBell = '';
   var _selectedMisc = '';
+  var showPreview = false;
 
   List heads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   List<Widget> headWidgets() => heads.map((head) {
@@ -219,10 +220,40 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
     _texture = args['texture'];
 
     return SafeArea(
-      child: Scaffold(
+      child: showPreview ? GestureDetector(
+        onTap: () {
+          setState(() {
+            showPreview = false;
+          });
+        },
+        child: Scaffold (
+          backgroundColor: const Color(0xFF3E3E3C),
+          body: Center(
+            child: Container (
+              width: 400,
+              margin: EdgeInsets.all(16.0),
+              child: Stack(
+                children: [
+                  // if (_selectedHead != '') Image.asset('assets/images/' + 'TEXT_' + texture + '/HEAD-' + texture + '-' + _selectedHead + '.png'),
+                  // Image.asset('assets/images/naga.png'),
+                  // Image.asset('assets/images/naga.png'),
+                  Image.asset('assets/images/PREVIEW/TEST-DARK.png'),
+                  Image.asset('assets/images/PREVIEW/TEXT_$_texture/GEST-$_texture.png'),
+                  if(_selectedFin != '') Image.asset('assets/images/PREVIEW/EXTRUDED_BONES/$_selectedFin.png'),
+                  if(_selectedMisc != '') Image.asset('assets/images/PREVIEW/MISC/MISC-$_selectedMisc.png'),
+                  if(_selectedBell != '') Image.asset('assets/images/PREVIEW/ACCESSORIES/ACC-$_selectedBell.png'),
+                  Image.asset('assets/images/PREVIEW/TEXT_$_texture/TAIL-$_texture-$_selectedTail.png'),
+                  Image.asset('assets/images/PREVIEW/TEXT_$_texture/HEAD-$_texture-$_selectedHead.png'),
+                  Image.asset('assets/images/PREVIEW/EYE/EYE-$_selectedEye.png'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ) :  Scaffold(
         backgroundColor: const Color(0xFFFAF4ED),
         body: Center(
-          child: Container(
+          child:  Container(
             width: 400,
             margin: EdgeInsets.all(16.0),
             child: Column(
@@ -277,14 +308,17 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                         ),
                         GestureDetector(
                           onTap: () async {
-                            if(kIsWeb){
-                              RenderRepaintBoundary boundary = key.currentContext!
-                                  .findRenderObject() as RenderRepaintBoundary;
-                              var image = await boundary.toImage();
-
-                              ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-                              Uint8List pngBytes = byteData!.buffer.asUint8List();
-                              final _base64 = base64Encode(pngBytes);
+                            setState(() {
+                              showPreview = true;
+                            });
+                            // if(kIsWeb){
+                              // RenderRepaintBoundary boundary = key.currentContext!
+                              //     .findRenderObject() as RenderRepaintBoundary;
+                              // var image = await boundary.toImage();
+                              //
+                              // ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+                              // Uint8List pngBytes = byteData!.buffer.asUint8List();
+                              // final _base64 = base64Encode(pngBytes);
 
                               // Dio dio = new Dio();
                               // var response = await dio.download('data:application/octet-stream;base64,$_base64', 'image.png');
@@ -292,16 +326,16 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               // js.context.callMethod("webSaveAs", [html.Blob([pngBytes]), "image.png"]);
                               // debugPrint(_base64);
 
-                              final anchor =
-                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
-                                ..download = "image.txt"
-                                ..target = 'blank';
+                              // final anchor =
+                              // html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
+                              //   ..download = "image.txt"
+                              //   ..target = 'blank';
+                              //
+                              // html.document.body!.append(anchor);
+                              // anchor.click();
+                              // anchor.remove();
 
-                              html.document.body!.append(anchor);
-                              anchor.click();
-                              anchor.remove();
-
-                            }
+                            // }
                             // if (await Permission.storage.request().isGranted) {
                             //   final directory = await getDownloadPath();
                             //   String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.jpg';
