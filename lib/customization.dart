@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:html' as html;
 
@@ -285,21 +286,20 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
                               Uint8List pngBytes = byteData!.buffer.asUint8List();
                               final _base64 = base64Encode(pngBytes);
 
-                              js.context.callMethod("webSaveAs", [html.Blob([pngBytes]), "image.png"]);
+                              // Dio dio = new Dio();
+                              // var response = await dio.download('data:application/octet-stream;base64,$_base64', 'image.png');
+
+                              // js.context.callMethod("webSaveAs", [html.Blob([pngBytes]), "image.png"]);
                               // debugPrint(_base64);
 
-                              // final anchor =
-                              // html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
-                              //   ..download = "image.png"
-                              //   ..target = 'blank';
-                              //
-                              // html.document.body!.append(anchor);
-                              // anchor.click();
-                              // anchor.remove();
+                              final anchor =
+                              html.AnchorElement(href: 'data:application/octet-stream;base64,$_base64')
+                                ..download = "image.txt"
+                                ..target = 'blank';
 
-                              // html.document.body!.append(anchor);
-                              // anchor.click();
-                              // anchor.remove();
+                              html.document.body!.append(anchor);
+                              anchor.click();
+                              anchor.remove();
 
                             }
                             // if (await Permission.storage.request().isGranted) {
