@@ -256,7 +256,7 @@ class _CustomizationState extends State<Customization> with SingleTickerProvider
         backgroundColor: const Color(0xFFFAF4ED),
         body: Center(
           child:  Container(
-            width: 400,
+            width: 450,
             margin: EdgeInsets.all(16.0),
             child: Column(
               children: [

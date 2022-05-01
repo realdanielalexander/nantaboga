@@ -126,7 +126,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),),
                     Positioned(
-                      bottom: 120,
+                      bottom: 100,
                       child: GestureDetector(
                         onTap: () async {
                           Navigator.pushNamed(context, '/race-selection');
