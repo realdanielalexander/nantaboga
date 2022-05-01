@@ -7,10 +7,12 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color(0XFFF8F3EC),
         body: Center(
           child: Container(
-            width: 400,
-            color: const Color(0xFF2A251E),
+            width: 450,
+            height: 800,
+            color: const Color(0XFFF8F3EC),
             child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -123,19 +125,22 @@ class WelcomeScreen extends StatelessWidget {
                             fit: BoxFit.contain
                         ),
                       ),),
-                    GestureDetector(
-                      onTap: () async {
-                        Navigator.pushNamed(context, '/race-selection');
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/HOMEPAGE/START-BUTTON-01.png"),
-                              fit: BoxFit.contain
-                          ),
-                        ),),
+                    Positioned(
+                      bottom: 120,
+                      child: GestureDetector(
+                        onTap: () async {
+                          Navigator.pushNamed(context, '/race-selection');
+                        },
+                        child: Container(
+                          width: 140,
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("assets/images/HOMEPAGE/START-BUTTON-01-CROP.png"),
+                                fit: BoxFit.contain
+                            ),
+                          ),),
+                      ),
                     )
                   ]
                 ),
