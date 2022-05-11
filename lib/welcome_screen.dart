@@ -107,36 +107,42 @@ class WelcomeScreen extends StatelessWidget {
                             fit: BoxFit.fitWidth
                         ),
                       ),),
-                    Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/HOMEPAGE/NAME-01.png"),
-                            fit: BoxFit.contain
-                        ),
-                      ),),
-                    Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/HOMEPAGE/TITLE-01.png"),
-                            fit: BoxFit.contain
-                        ),
-                      ),),
                     Positioned(
-                      bottom: 100,
+                      bottom: 0,
+                      child: Container(
+                        width: 360,
+                        height: 100,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/HOMEPAGE/NAME-01.png"),
+                              fit: BoxFit.contain
+                          ),
+                        ),),
+                    ),
+                    Positioned(
+                      top: 0,
+                      child: Container(
+                        width: 480,
+                        height: 200,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/HOMEPAGE/TITLE-01.png"),
+                              fit: BoxFit.contain
+                          ),
+                        ),),
+                    ),
+                    Positioned(
+                      bottom: 90,
                       child: GestureDetector(
                         onTap: () async {
                           Navigator.pushNamed(context, '/race-selection');
                         },
                         child: Container(
-                          width: 140,
+                          width: 480,
                           height: 100,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage("assets/images/HOMEPAGE/START-BUTTON-01-CROP.png"),
+                                image: AssetImage("assets/images/buttonmulai.png"),
                                 fit: BoxFit.contain
                             ),
                           ),),

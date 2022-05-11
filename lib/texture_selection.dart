@@ -59,12 +59,12 @@ class _TextureSelectionState extends State<TextureSelection> {
                     ),
                   ),
                 ),
-                Image.asset('assets/images/command-texture.png', width: 240,),
+                Image.asset('assets/images/command-texture.png', width: 800, height: 140, fit: BoxFit.cover,),
                 // Text("Pilih Tekstur Naga",
                 //   textAlign: TextAlign.center,
                 //   style:  TextStyle(color: const Color(0xFF526C2F), fontSize: 28),
                 // ),
-                SizedBox(height: 16.0),
+                // SizedBox(height: 16.0),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(80, 0, 80, 0),

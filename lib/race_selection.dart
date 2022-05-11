@@ -32,8 +32,8 @@ class _RaceSelectionState extends State<RaceSelection> {
             padding: EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               children: <Widget>[
-                Image.asset('assets/images/command-race.png', width: 280.0,),
-                SizedBox(height: 16.0),
+                Image.asset('assets/images/command-race.png', width: 800, height: 140, fit: BoxFit.cover,),
+                // SizedBox(height: 16.0),
                 GridView.count(
                     primary: false,
                     crossAxisSpacing: 10,
